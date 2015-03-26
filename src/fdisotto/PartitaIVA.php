@@ -5,7 +5,7 @@
  * @author      Fabio Di Sotto <fabio.disotto@gmail.com>
  * @copyright   2015 Fabio Di Sotto
  * @link        https://github.com/fdisotto/cac-api
- * @version     1.0.0
+ * @version     2.0.0
  *
  * MIT LICENSE
  *
@@ -48,8 +48,32 @@ class PartitaIVA
      */
     public function check($partitaIVA)
     {
-        $pattern = "/^[0-9]{11}$/i";
+        if (empty($partitaIVA)) {
+            return false;
+        }
 
-        return preg_match($pattern, trim($partitaIVA)) ? true : false;
+        $pattern = "/^[0-9]{11}$/i";
+        if (!preg_match($pattern, trim($partitaIVA))) {
+            return false;
+        }
+
+        $s = 0;
+        for ($i = 0; $i <= 9; $i += 2 ) {
+            $s+= ord($partitaIVA[$i]) - ord('0');
+        }
+
+        for ($i = 1; $i <= 9; $i += 2 ) {
+            $c = 2 * (ord($partitaIVA[$i]) - ord('0'));
+            if ($c > 9) {
+                $c-= 9;
+            }
+            $s+= $c;
+        }
+
+        if (((10 - $s % 10) % 10) != (ord($partitaIVA[10]) - ord('0'))) {
+            return false;
+        }
+
+        return true;
     }
 }

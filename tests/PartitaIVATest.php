@@ -10,11 +10,11 @@ class PartitaIVATest extends PHPUnit_Framework_TestCase
 
     public function testCheckTrue()
     {
-        $this->assertTrue($this->pIva->check('01234567891'));
+        $this->assertTrue($this->pIva->check('07973780013'));
     }
 
     public function testCheckFalse()
     {
-        $this->assertFalse($this->pIva->check('123456'));
+        $this->assertFalse($this->pIva->check('01234567891'));
     }
 }
