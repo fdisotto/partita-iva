@@ -1,8 +1,17 @@
 <?php
 require_once '../vendor/autoload.php';
 
-$pIva = new \fdisotto\PartitaIVA();
+$pIva = new \fdisotto\PartitaIVA('07973780013', 'IT');
+if ($pIva->isValid() === true) {
+    // exist
+}
 
-var_dump($pIva->check('01234567891'));
+$pIva = new \fdisotto\PartitaIVA('07973780013');
+if ($pIva->isValid() === true) {
+    // exist
+}
 
-var_dump($pIva->check('07973780013'));
+$pIva = new \fdisotto\PartitaIVA('66780129987', 'FR');
+if ($pIva->isValid() === true) {
+    // exist
+}

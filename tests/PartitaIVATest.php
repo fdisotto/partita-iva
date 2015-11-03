@@ -3,18 +3,21 @@ class PartitaIVATest extends PHPUnit_Framework_TestCase
 {
     private $pIva;
 
-    public function setUp()
-    {
-        $this->pIva = new \fdisotto\PartitaIVA();
-    }
-
     public function testCheckTrue()
     {
-        $this->assertTrue($this->pIva->check('07973780013'));
+        $pIva = new \fdisotto\PartitaIVA('07973780013', 'IT');
+        $this->assertTrue($pIva->isValid());
+
+        $pIva = new \fdisotto\PartitaIVA('07973780013');
+        $this->assertTrue($pIva->isValid());
+
+        $pIva = new \fdisotto\PartitaIVA('66780129987', 'FR');
+        $this->assertTrue($pIva->isValid());
     }
 
     public function testCheckFalse()
     {
-        $this->assertFalse($this->pIva->check('01234567891'));
+        $pIva = new \fdisotto\PartitaIVA('12015485235', 'IT');
+        $this->assertFalse($pIva->isValid());
     }
 }

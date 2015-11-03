@@ -40,40 +40,53 @@ namespace fdisotto;
  */
 class PartitaIVA
 {
-    /**
-     * Return the check result
-     *
-     * @param string $partitaIVA Partita IVA to check
-     * @return bool Check result
-     */
-    public function check($partitaIVA)
-    {
-        if (empty($partitaIVA)) {
+    private $_partitaIVA;
+    private $_codiceComunitario;
+    private $_valid = false;
+
+    public function __construct($partitaIVA = '', $codiceComunitario = 'IT') {
+        if ($codiceComunitario) {
+            $this->_codiceComunitario = $codiceComunitario;
+        } else {
+            throw new \Exception("Codice comunitario dello Stato mancante", 1);
+        }
+
+        if ($partitaIVA) {
+            $this->_partitaIVA = $partitaIVA;
+        } else {
+            throw new \Exception("Partita IVA mancante", 1);
+        }
+    }
+
+    public function isValid() {
+        $this->getRequest();
+
+        return $this->_valid;
+    }
+
+    private function getRequest() {
+        try {
+            $opts = array(
+                'http'=>array(
+                    'user_agent' => 'PHPSoapClient'
+                )
+            );
+
+            $context = stream_context_create($opts);
+            $client = new \SoapClient('http://ec.europa.eu/taxation_customs/vies/checkVatService.wsdl',
+                                     array('stream_context' => $context,
+                                           'cache_wsdl' => WSDL_CACHE_NONE));
+
+            $result = $client->checkVat(array(
+                'countryCode' => $this->_codiceComunitario,
+                'vatNumber' => $this->_partitaIVA
+            ));
+
+            $this->_valid = $result->valid == 1 ? true : false;
+
+            return true;
+        } catch (\Exception $e) {
             return false;
         }
-
-        $pattern = "/^[0-9]{11}$/i";
-        if (!preg_match($pattern, trim($partitaIVA))) {
-            return false;
-        }
-
-        $s = 0;
-        for ($i = 0; $i <= 9; $i += 2 ) {
-            $s+= ord($partitaIVA[$i]) - ord('0');
-        }
-
-        for ($i = 1; $i <= 9; $i += 2 ) {
-            $c = 2 * (ord($partitaIVA[$i]) - ord('0'));
-            if ($c > 9) {
-                $c-= 9;
-            }
-            $s+= $c;
-        }
-
-        if (((10 - $s % 10) % 10) != (ord($partitaIVA[10]) - ord('0'))) {
-            return false;
-        }
-
-        return true;
     }
 }
