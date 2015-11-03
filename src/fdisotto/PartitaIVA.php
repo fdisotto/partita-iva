@@ -5,7 +5,7 @@
  * @author      Fabio Di Sotto <fabio.disotto@gmail.com>
  * @copyright   2015 Fabio Di Sotto
  * @link        https://github.com/fdisotto/cac-api
- * @version     2.0.0
+ * @version     3.0.0
  *
  * MIT LICENSE
  *
