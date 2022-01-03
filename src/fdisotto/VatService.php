@@ -1,6 +1,9 @@
 <?php
 declare(strict_types=1);
+
 namespace fdisotto;
+
+use SoapClient;
 
 class VatService
 {
@@ -15,16 +18,17 @@ class VatService
         $this->client = $this->getRequest();
     }
 
-    protected function getRequest() {
+    protected function getRequest()
+    {
         try {
             $opts = array(
-                'http'=>array(
+                'http' => array(
                     'user_agent' => 'PHPSoapClient'
                 )
             );
 
             $context = stream_context_create($opts);
-            $client = new \SoapClient('http://ec.europa.eu/taxation_customs/vies/checkVatService.wsdl',
+            $client = new SoapClient('http://ec.europa.eu/taxation_customs/vies/checkVatService.wsdl',
                 array('stream_context' => $context,
                     'cache_wsdl' => WSDL_CACHE_NONE));
 
@@ -36,12 +40,12 @@ class VatService
 
     public function checkVat($codiceComunitario, $partitaIva): bool
     {
-            $result = $this->client->checkVat(array(
-                'countryCode' => $codiceComunitario,
-                'vatNumber' => $partitaIva
-            ));
-            $this->_valid = $result->valid == 1 ? true : false;
-            return $this->_valid;
+        $result = $this->client->checkVat(array(
+            'countryCode' => $codiceComunitario,
+            'vatNumber' => $partitaIva
+        ));
+        $this->_valid = $result->valid == 1 ? true : false;
+        return $this->_valid;
     }
 
 }

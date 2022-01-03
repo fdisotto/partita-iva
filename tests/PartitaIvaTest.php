@@ -1,23 +1,30 @@
 <?php
-class PartitaIVATest extends PHPUnit_Framework_TestCase
+
+use fdisotto\PartitaIVA;
+use fdisotto\VatService;
+
+class PartitaIvaTest extends PHPUnit_Framework_TestCase
 {
-    private $pIva;
-
-    public function testCheckTrue()
+    public function testCanBeValidPartitaIva()
     {
-        $pIva = new \fdisotto\PartitaIVA('07973780013', 'IT');
+        $vatService = new VatService();
+        $pIva = new PartitaIva($vatService);
+        $pIva->setPartitaIVA('66780129987');
+        $pIva->setCodiceComunitario('FR');
         $this->assertTrue($pIva->isValid());
 
-        $pIva = new \fdisotto\PartitaIVA('07973780013');
-        $this->assertTrue($pIva->isValid());
-
-        $pIva = new \fdisotto\PartitaIVA('66780129987', 'FR');
+        $pIva = new PartitaIva($vatService);
+        $pIva->setPartitaIVA('07973780013');
+        $pIva->setCodiceComunitario('IT');
         $this->assertTrue($pIva->isValid());
     }
 
-    public function testCheckFalse()
+    public function testCanBeNotValidPartitaIva()
     {
-        $pIva = new \fdisotto\PartitaIVA('12015485235', 'IT');
+        $vatService = new VatService();
+        $pIva = new PartitaIva($vatService);
+        $pIva->setPartitaIVA('12015485235');
+        $pIva->setCodiceComunitario('IT');
         $this->assertFalse($pIva->isValid());
     }
 }
