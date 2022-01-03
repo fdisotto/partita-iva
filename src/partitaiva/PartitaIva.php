@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace partitaiva;
 
-class PartitaIva
+class PartitaIva implements PartitaIvaInterface
 {
     private $_partitaIVA;
     private $_codiceComunitario;
