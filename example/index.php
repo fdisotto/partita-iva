@@ -1,6 +1,6 @@
 <?php
 
-use fdisotto\PartitaIVA;
+use partitaiva\PartitaIVA;
 
 require_once '../vendor/autoload.php';
 

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace fdisotto;
+namespace partitaiva;
 
 class PartitaIva
 {
@@ -12,17 +12,6 @@ class PartitaIva
     public function __construct(VatService $vatService)
     {
         $this->vatService = $vatService;
-        /* if ($codiceComunitario) {
-             $this->_codiceComunitario = $codiceComunitario;
-         } else {
-             throw new \Exception("Codice comunitario dello Stato mancante", 1);
-         }
-
-         if ($partitaIVA) {
-             $this->_partitaIVA = $partitaIVA;
-         } else {
-             throw new \Exception("Partita IVA mancante", 1);
-         }*/
     }
 
     /**

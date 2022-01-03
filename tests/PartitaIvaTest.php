@@ -1,7 +1,7 @@
 <?php
 
-use fdisotto\PartitaIVA;
-use fdisotto\VatService;
+use partitaiva\PartitaIVA;
+use partitaiva\VatService;
 
 class PartitaIvaTest extends PHPUnit_Framework_TestCase
 {
